@@ -7,8 +7,10 @@ data class Point(
 )
 
 data class Rect(
-    val pointTopLeft: Point,
-    val pointBottomRight: Point,
+    val left: Long,
+    val right: Long,
+    val top: Long,
+    val bottom: Long,
     val width: Long,
     val height: Long
 )
@@ -25,16 +27,16 @@ fun rotate90(rotateCenter: Point, point: Point) =
     Point(rotateCenter.x - (point.y - rotateCenter.y), rotateCenter.y + (point.x - rotateCenter.x))
 
 fun rotateAndMergeFrom(figure: Figure): Figure {
-    val topPoint = max(figure.rect.pointTopLeft.y, rotate90(figure.rotatePoint, figure.rect.pointBottomRight).y)
-    val bottomPoint = min(figure.rect.pointBottomRight.y, rotate90(figure.rotatePoint, figure.rect.pointTopLeft).y)
-    val leftPoint = min(figure.rect.pointTopLeft.x, rotate90(figure.rotatePoint, figure.rect.pointTopLeft).x)
-    val rightPoint = max(figure.rect.pointBottomRight.x, rotate90(figure.rotatePoint, figure.rect.pointBottomRight).x)
+    val topPoint = max(figure.rect.top, rotate90(figure.rotatePoint, Point(figure.rect.right, figure.rect.bottom)).y)
+    val bottomPoint = min(figure.rect.bottom, rotate90(figure.rotatePoint, Point(figure.rect.left, figure.rect.top)).y)
+    val leftPoint = min(figure.rect.left, rotate90(figure.rotatePoint, Point(figure.rect.left, figure.rect.top)).x)
+    val rightPoint = max(figure.rect.right, rotate90(figure.rotatePoint, Point(figure.rect.right, figure.rect.bottom)).x)
     return Figure(
         figure.n + 1,
         figure.kinks * 2 + 1,
         figure.startPoint,
         rotate90(figure.rotatePoint, figure.startPoint),
-        Rect(Point(leftPoint, topPoint), Point(rightPoint, bottomPoint), rightPoint - leftPoint, topPoint - bottomPoint)
+        Rect(leftPoint, rightPoint, topPoint, bottomPoint, rightPoint - leftPoint, topPoint - bottomPoint)
     )
 }
 
@@ -48,7 +50,7 @@ fun main(args: Array<String>) {
                     0,
                     1,
                     Point(0, 0), Point(0, 1),
-                    Rect(Point(0, 1), Point(0, 0), 0, 1)
+                    Rect(0, 0, 1, 0, 0, 1)
                 )
             )
             for (i in 1..number) {
