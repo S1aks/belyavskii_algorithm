@@ -1,32 +1,32 @@
 import kotlin.math.max
 import kotlin.math.min
 
-data class Point(
-    val x: Long,
-    val y: Long
+data class Point(   // Point class Point(x,y)
+    val x: Long,    // x parameter
+    val y: Long     // y parameter
 )
 
-data class Rect(
-    val left: Long,
-    val right: Long,
-    val top: Long,
-    val bottom: Long,
-    val width: Long,
-    val height: Long
+data class Rect(        // Figure border rectangle class
+    val left: Long,     // Left point of rect
+    val right: Long,    // Right point
+    val top: Long,      // Top point
+    val bottom: Long,   // Bottom point
+    val width: Long,    // Width of border rectangle
+    val height: Long    // Height of border rectangle
 )
 
-data class Figure(
-    val n: Int,
-    val kinks: Long,
-    val startPoint: Point,
-    val rotatePoint: Point,
-    val rect: Rect
+data class Figure(          // Figure class
+    val n: Int,             // Number of action
+    val kinks: Long,        // Kinks of Figure
+    val startPoint: Point,  // Start point (not changes)
+    val rotatePoint: Point, // Rotate point for next action
+    val rect: Rect          // Figure border rectangle
 )
 
-fun rotate90(rotateCenter: Point, point: Point) =
+fun rotate90(rotateCenter: Point, point: Point) = // Rotate point on 90 degrees around rotateCenter
     Point(rotateCenter.x - (point.y - rotateCenter.y), rotateCenter.y + (point.x - rotateCenter.x))
 
-fun rotateAndMergeFrom(figure: Figure): Figure {
+fun rotateAndMergeFrom(figure: Figure): Figure { // Rotate figure border rectangle and merge with last
     val topPoint = max(figure.rect.top, rotate90(figure.rotatePoint, Point(figure.rect.right, figure.rect.bottom)).y)
     val bottomPoint = min(figure.rect.bottom, rotate90(figure.rotatePoint, Point(figure.rect.left, figure.rect.top)).y)
     val leftPoint = min(figure.rect.left, rotate90(figure.rotatePoint, Point(figure.rect.left, figure.rect.top)).x)
