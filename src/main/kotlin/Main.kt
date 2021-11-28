@@ -41,11 +41,11 @@ fun rotateAndMergeFrom(figure: Figure): Figure { // Rotate figure border rectang
 }
 
 fun main(args: Array<String>) {
-    val figures = mutableListOf<Figure>()
+    val figures = mutableListOf<Figure>()       // Create figures array list
     print("Number n = ")
-    when (val number = readLine()!!.toInt()) {
-        in 1..100 -> {
-            figures.add(
+    when (val number = readLine()!!.toInt()) {  // Read n from console
+        in 1..100 -> {                          // If n in 1..100 range...
+            figures.add(                        // Add first figure with n=0
                 Figure(
                     0,
                     1,
@@ -53,11 +53,11 @@ fun main(args: Array<String>) {
                     Rect(0, 0, 1, 0, 0, 1)
                 )
             )
-            for (i in 1..number) {
-                figures.add(rotateAndMergeFrom(figures[i - 1]))
-                println("$i: (${figures[i].rect.width},${figures[i].rect.height})")
+            for (i in 1..number) {              // Cycle from 1 to n
+                figures.add(rotateAndMergeFrom(figures[i - 1]))     // Add new figure to list
+                println("$i: (${figures[i].rect.width},${figures[i].rect.height})")     // Print data for current iteration
             }
         }
-        else -> println("Wrong number!")
+        else -> println("Wrong number!")        // Print if n < 0 or n > 100
     }
 }
